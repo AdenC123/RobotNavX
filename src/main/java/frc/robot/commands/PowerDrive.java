@@ -42,8 +42,8 @@ public class PowerDrive extends Command {
     //SmartDashboard.putString("DB/String 3", String.format("conditioned twist: %4.3f", stickTwist));
     
     // limit power with the GAIN constant
-    double powerForward = Math.pow(Math.abs(stickY), Constants.SENSITIVITY) * ySign * Constants.GAIN;
-    double powerTwist = Math.pow(Math.abs(stickTwist), Constants.SENSITIVITY) * twistSign * Constants.GAIN * Constants.TURN_SENSITIVITY;
+    double powerForward = Math.pow(Math.abs(stickY), Constants.FORWARD_SENSITIVITY) * ySign * Constants.FORWARD_GAIN;
+    double powerTwist = Math.pow(Math.abs(stickTwist), Constants.TURN_SENSITIVITY) * twistSign * Constants.TURN_GAIN;
 
     Robot.m_drive.setPowerArcade(powerForward, powerTwist);
 

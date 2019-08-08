@@ -37,13 +37,18 @@ public class SpeedDrive extends Command {
     double ySign = (stickY > 0.0) ? 1.0 : -1.0;
     double twistSign = (stickTwist > 0.0) ? 1.0 : -1.0;
 
+    //correct for deadband
+    double useY = (Math.abs(stickY) < Constants.DRIVE_DEADBAND) ? 0.0 :
+      (Math.abs(stickY) - Constants.DRIVE_DEADBAND) / (1.0 - Constants.DRIVE_DEADBAND);
+    double useTwist = (Math.abs(stickTwist) < Constants.DRIVE_DEADBAND) ? 0.0 :
+      (Math.abs(stickTwist) - Constants.DRIVE_DEADBAND) / (1.0 - Constants.DRIVE_DEADBAND);
     // print conditioned stick values    
     //SmartDashboard.putString("DB/String 2", String.format("conditioned y: %4.3f", stickY));
     //SmartDashboard.putString("DB/String 3", String.format("conditioned twist: %4.3f", stickTwist));
     
     // limit power with the GAIN constant
-    double powerForward = Math.pow(Math.abs(stickY), Constants.SENSITIVITY) * ySign * Constants.GAIN;
-    double powerTwist = Math.pow(Math.abs(stickTwist), Constants.SENSITIVITY) * twistSign * Constants.GAIN * Constants.TURN_SENSITIVITY;
+    double powerForward = Math.pow(useY, Constants.FORWARD_SENSITIVITY) * ySign * Constants.FORWARD_GAIN;
+    double powerTwist = Math.pow(useTwist, Constants.TURN_SENSITIVITY) * twistSign * Constants.TURN_GAIN;
 
     Robot.m_drive.setSpeedArcade(powerForward, powerTwist);
 

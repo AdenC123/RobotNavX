@@ -7,14 +7,16 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SerialPort;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Drive;
-//import frc.robot.subsystems.ExampleSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,9 +26,16 @@ import frc.robot.subsystems.Drive;
  * project.
  */
 public class Robot extends TimedRobot {
-  //public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
-  public static Drive m_drive = new Drive();
+
+  public static final Drive m_drive = new Drive();
   public static OI m_oi;
+
+  // navx thing
+  private static AHRS ahrs;
+
+  static public AHRS getAHRS() {
+    return ahrs;
+  }
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -38,12 +47,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("DB/String 2", String.format("right encoder: %4.3f", Robot.m_drive.getRightPosition()));
     SmartDashboard.putString("DB/String 3", String.format("left encoder: %4.3f", Robot.m_drive.getLeftPosition()));
     //SmartDashboard.putString("DB/String 4", String.format("SENSITIVITY: %4.3f", Constants.SENSITIVITY));
-    SmartDashboard.putString("DB/String 4", String.format("DRIVE_KF: %4.3f", Constants.DRIVE_KF));
+    //SmartDashboard.putString("DB/String 4", String.format("DRIVE_KF: %4.3f", Constants.DRIVE_KF));
     SmartDashboard.putString("DB/String 5", String.format("right speed: %4.3f", Robot.m_drive.getRightSpeed()));
     SmartDashboard.putString("DB/String 6", String.format("left speed: %4.3f", Robot.m_drive.getLeftSpeed()));
-    SmartDashboard.putString("DB/String 7", String.format("IntegralZone: %4.3f", Constants.INTEGRAL_ZONE));
-    SmartDashboard.putString("DB/String 8", String.format("DRIVE_KP: %4.3f", Constants.DRIVE_KP));
-    SmartDashboard.putString("DB/String 9", String.format("DRIVE_KI: %4.3f", Constants.DRIVE_KI));
+    SmartDashboard.putString("DB/String 7", String.format("yaw: %7.3f", ahrs.getYaw()));
+    SmartDashboard.putString("DB/String 8", String.format("pitch: %7.3f", ahrs.getPitch()));
+    SmartDashboard.putString("DB/String 9", String.format("roll: %7.3f", ahrs.getRoll()));
 }
  /**
    * This function is run when the robot is first started up and should be
@@ -62,6 +71,17 @@ public class Robot extends TimedRobot {
 
     // reset encoders during init
     Robot.m_drive.resetEncoders();
+
+    // navx setup
+    ahrs = new AHRS(SerialPort.Port.kUSB1);
+    ahrs.reset();
+    while (ahrs.isCalibrating()) {
+      try {
+        Thread.sleep(500);
+      } catch (InterruptedException e) {
+        break;
+      }
+    }
   }
 
   /**

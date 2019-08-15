@@ -73,14 +73,22 @@ public class Robot extends TimedRobot {
     Robot.m_drive.resetEncoders();
 
     // navx setup
-    ahrs = new AHRS(SerialPort.Port.kUSB1);
-    ahrs.reset();
-    while (ahrs.isCalibrating()) {
-      try {
-        Thread.sleep(500);
-      } catch (InterruptedException e) {
-        break;
+    try {
+      System.out.println("Initialize navx");
+      ahrs = new AHRS(SerialPort.Port.kUSB1);
+      System.out.println("Initialized navx");
+      System.out.println(ahrs.toString());
+      ahrs.reset();
+      while (ahrs.isCalibrating()) {
+        try {
+          Thread.sleep(500);
+        } catch (InterruptedException e) {
+          break;
+        }
       }
+    } catch (Throwable e) {
+      System.out.println(e);
+      ahrs = null;
     }
   }
 

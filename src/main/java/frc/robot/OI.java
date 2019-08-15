@@ -21,17 +21,18 @@ public class OI {
   //adding joystick and trigger
   private final Joystick stick = new Joystick(0);
 
-  private final JoystickButton button11 = new JoystickButton(this.stick, 11);
+  private final JoystickButton trigger = new JoystickButton(this.stick, 1);
   private final JoystickButton sideButton = new JoystickButton(this.stick, 2);
-  private final JoystickButton button12 = new JoystickButton(this.stick, 12);
-  private final JoystickButton button6 = new JoystickButton(this.stick, 6);
+  private final JoystickButton button3 = new JoystickButton(this.stick, 3);
   private final JoystickButton button4 = new JoystickButton(this.stick, 4);
   private final JoystickButton button5 = new JoystickButton(this.stick, 5);
-  private final JoystickButton button3 = new JoystickButton(this.stick, 3);
-  private final JoystickButton button10 = new JoystickButton(this.stick, 10);
-  private final JoystickButton button9 = new JoystickButton(this.stick, 9);
+  private final JoystickButton button6 = new JoystickButton(this.stick, 6);
   private final JoystickButton button7 = new JoystickButton(this.stick, 7);
   private final JoystickButton button8 = new JoystickButton(this.stick, 8);
+  private final JoystickButton button9 = new JoystickButton(this.stick, 9);
+  private final JoystickButton button10 = new JoystickButton(this.stick, 10);
+  private final JoystickButton button11 = new JoystickButton(this.stick, 11);
+  private final JoystickButton button12 = new JoystickButton(this.stick, 12);
   
   //method to be called by other commands or subsystems to use the joystick
   public Joystick getStick() {
